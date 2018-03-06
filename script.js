@@ -1,34 +1,37 @@
-let dat;
-let x;
-const obj = [];
-const collections = [];
-const store = [];
+var dat;
+var x;
+var obj = [];
+var collections = [];
+var store = [];
 
 function putval() {
-  document.getElementById('att').innerHTML = '';
-  const movie = document.getElementById('val').value;
-  url1 = 'https://api.themoviedb.org/3/search/multi?api_key=cf04c17e405719e5a04624c3dc238a94&language=en-US&query=';
-  const url2 = '&page=1&include_adult=false';
-  let p = 0;
-  url = url1 + movie + url2;
-  fetch(url)
-    .then((res) => {
-      res.json()
-        .then((data) => {
-          // console.log(data);
-          dat = data.results;
-          for (let i = 0; i < data.results.length; i += 1) {
-            if (data.results[i].title === undefined || data.results[i].poster_path === null) // if array title is not there then skip
-            { continue; }
+     document.getElementById('att').innerHTML = "";
+     var movie = document.getElementById("val").value;
+     url1 = `https://api.themoviedb.org/3/search/multi?api_key=cf04c17e405719e5a04624c3dc238a94&language=en-US&query=`;
+     var url2 = `&page=1&include_adult=false`;
+     var p = 0;
+     url = url1 + movie + url2;
+     fetch(url)
+         .then((res) => {
+             res.json()
+                 .then((data) => {
+                     //console.log(data);
+                     dat = data.results;
+                     for (var i = 0; i < data.results.length; i += 1) {
 
-            const title = data.results[i].title;
-            const overview = data.results[i].overview;
-            const pic = data.results[i].poster_path;
-            if (p % 3 === 0) { var arranger = '<div class="row " >'; }
 
-            const disp = `
+                         if (data.results[i].title === undefined || data.results[i].poster_path === null) //if array title is not there then skip
+                             continue;
+
+                         var title = data.results[i].title;
+                         var overview = data.results[i].overview;
+                         var pic = data.results[i].poster_path;
+                         if (p % 3 === 0)
+                             var arranger = `<div class="row " >`;
+
+                         var disp = `
                              <div class="col s12 m4 l4">
-                            <div class="card" id="${title}">
+                            <div class="card">
                        <div class="card-image waves-effect waves-block waves-light">
                        <img class="activator" src="https://image.tmdb.org/t/p/w200${pic}" alt="pic: ${title}">
                           </div>
@@ -43,21 +46,23 @@ function putval() {
     </div>
   </div>
 
-                            </div
+                            </div>
+                            `;
+                         arranger += disp;
 
-                                                        `;
-            arranger += disp;
+                         if (p % 3 === 2) {
+                             arranger += `</div>`;
+                             document.getElementById('att').innerHTML += arranger;
+                         }
 
-            if (p % 3 === 2) {
-              arranger += '</div>';
-              document.getElementById('att').innerHTML += arranger;
-            }
+                         p++;
 
-            p++;
-          }
-        });
-    });
-}
+                     }
+
+                 })
+         })
+
+ }
 
 /* pass function */
 function pass(l) {
@@ -68,13 +73,13 @@ function pass(l) {
 
 /* add function */
 function add() {
-  const a = document.getElementById('addCollection').value;
+  var a = document.getElementById('addCollection').value;
 
 
   obj.push(a);
   document.getElementById('dropdown2').innerHTML += `<li id="${obj.length - 1}" onclick="addCollection(${obj.length - 1})">${a}</li>`;
   
-  const d = `
+  var d = `
                   <li>
                   <div class="collapsible-header"><i class="material-icons">class</i>${a}</div>
                   <div class="collapsible-body"  >
@@ -90,7 +95,7 @@ function add() {
 
 /* function for collections */
 function addCollection(j) {
-  const res = {};
+  var res = {};
 
   res.collection = obj[j];
   res.movie = dat[x].title;
@@ -110,7 +115,7 @@ function dispCollection(mov, coll) {
 
   for (let a = 0; a < obj.length; a++) {
     if (coll == obj[a]) {
-      const d = `<li col="l2 m2" id="${coll}-${mov}">
+      var d = `<li col="l2 m2" id="${coll}-${mov}">
       <a  href="#!" id="${mov}-${coll}" onclick="del('${coll}-${mov}')"><i class="material-icons ">delete_forever</i></a>
       ${mov}</li>`;
       document.getElementById(obj[a]).innerHTML += d;
@@ -126,7 +131,7 @@ function dispCollection(mov, coll) {
 
 function del(a) {
   console.log(a);
-  const li = document.getElementById(a);
+  var li = document.getElementById(a);
   li.parentNode.removeChild(li);
 }
 
