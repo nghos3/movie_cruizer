@@ -1,22 +1,27 @@
-var dat;
-var x;
-var obj = [];
-var collections = [];
-var store = [];
+ import $ from 'jquery';
+import { pass, addCollection } from "./appstate.js";
 
-function putval() {
+export const global1 = {
+  dat : [],
+  x : null
+   };
+
+ $("#test").click(function() {
+
+
      document.getElementById('att').innerHTML = "";
      var movie = document.getElementById("val").value;
-     url1 = `https://api.themoviedb.org/3/search/multi?api_key=cf04c17e405719e5a04624c3dc238a94&language=en-US&query=`;
+     var url1 = `https://api.themoviedb.org/3/search/multi?api_key=cf04c17e405719e5a04624c3dc238a94&language=en-US&query=`;
      var url2 = `&page=1&include_adult=false`;
      var p = 0;
-     url = url1 + movie + url2;
+     var url = url1 + movie + url2;
      fetch(url)
          .then((res) => {
              res.json()
                  .then((data) => {
-                     //console.log(data);
-                     dat = data.results;
+
+                     global1.dat = data.results;
+                     console.log(data);
                      for (var i = 0; i < data.results.length; i += 1) {
 
 
@@ -62,76 +67,7 @@ function putval() {
                  })
          })
 
- }
+ })
 
-/* pass function */
-function pass(l) {
-  x = l;
-  // console.log(x);
-}
-
-
-/* add collection */
-function add() {
-  var a = document.getElementById('addCollection').value;
-
-
-  obj.push(a);
-  document.getElementById('dropdown2').innerHTML += `<li id="${obj.length - 1}" onclick="addCollection(${obj.length - 1})">${a}</li>`;
-  
-  var d = `
-                  <li>
-                  <div class="collapsible-header"><i class="material-icons">class</i>${a}</div>
-                  <div class="collapsible-body"  >
-                  <ul id="${a}">
-                  </ul>
-                   </div>
-                  </li>
-
-                   `;
-  document.getElementById('side').innerHTML += d;
-}
-
-
-/* function for data collections(appstate) */
-function addCollection(j) {
-  var res = {};
-
-  res.collection = obj[j];
-  res.movie = dat[x].title;
-  res.date = dat[x].release_date;
-  res.summary = dat[x].overview;
-  res.ratings = dat[x].vote_average;
-  collections.push(res);
-
-  dispCollection(res.movie, res.collection);
-  // console.log(collections);
-}
-
-
-/* function for adding movies collections */
-function dispCollection(mov, coll) {
-  // console.log(collections[0].collection);
-
-  for (let a = 0; a < obj.length; a++) {
-    if (coll == obj[a]) {
-      var d = `<li col="l2 m2" id="${coll}-${mov}">
-      <a  href="#!" id="${mov}-${coll}" onclick="del('${coll}-${mov}')"><i class="material-icons ">delete_forever</i></a>
-      ${mov}</li>`;
-      document.getElementById(obj[a]).innerHTML += d;
-      /*
-      var aTag = document.getElementById(`${mov}-${coll}`);
-      aTag.onclick = function(){ */
-    }
-  }
-}
-
-
-/*delete movies*/
-
-function del(a) {
-  console.log(a);
-  var li = document.getElementById(a);
-  li.parentNode.removeChild(li);
-}
+ window.pass=pass;
 
